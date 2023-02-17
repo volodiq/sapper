@@ -12,3 +12,5 @@ for y in range(Y_SIZE):
     for x in range(X_SIZE):
         print(playground[y][x], end=" ")
     print() # Перенос на новую строку
+
+#bebra
