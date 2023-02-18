@@ -29,39 +29,61 @@ match choose_dificulty:
 # =========================== Создание поля =========================
 
 # Поле с значениями
-playground = [["❓"] * X_SIZE for i in range(Y_SIZE)]
+playground = [["?"] * X_SIZE for i in range(Y_SIZE)]
 
 # Поле игрока
-player = [["❓"] * X_SIZE for i in range(Y_SIZE)]
+player = [["?"] * X_SIZE for i in range(Y_SIZE)]
 
 # Создание мин
 for i in range(MINES_COUNT):
-    playground[random.randint(0, Y_SIZE - 1)][random.randint(0, X_SIZE - 1)] = "💣"
+    playground[random.randint(0, Y_SIZE - 1)][random.randint(0, X_SIZE - 1)] = "B"
 
 # Фунция проверки смежных клеток
 def check(y, x):
 
     bomb_index = 0
 
-    if playground[y][x] == "💣" : return "💣"
+    if playground[y][x] == "B" : return "B"
 
     # Проверка слева
-    elif playground[y][x - 1] == "💣" : bomb_index +=1
-
+    if x > 0 : 
+        if playground[y][x - 1] == "B" : bomb_index +=1
 
     # Проверка слева снизу
-    elif playground[y + 1][x - 1] == "💣" : bomb_index +=1
-
-
+    if x > 0 :
+        if y < Y_SIZE - 1: 
+            if playground[y + 1][x - 1] == "B" : bomb_index +=1
+    
     # Проверка слева сверху
-    elif playground[y ][x - 1] == "💣" : bomb_index +=1
+    if x > 0 & y > 0 : 
+        if playground[y - 1][x - 1] == "B" : bomb_index +=1
 
+        # Проверка сверху
+    if  y > 0 : 
+        if playground[y - 1][x] == "B" : bomb_index +=1
 
-    # Проверка слева
-    elif playground[y][x - 1] == "💣" : bomb_index +=1
+    # Проверка снизу
+    if y < Y_SIZE - 1 : 
+        if playground[y + 1][x] == "B" : bomb_index +=1
+
+    # Проверка справа 
+    if x < X_SIZE - 1 : 
+        if playground[y][x + 1] == "B" : bomb_index +=1
+
+    # Проверка справа снизу 
+    if x < X_SIZE - 1 & y < Y_SIZE - 1: 
+        if playground[y - 1][x + 1] == "B" : bomb_index +=1
+
+    # Проверка справа сверху
+    if x > 0 & y > 0 : 
+        if playground[y - 1][x + 1] == "B" : bomb_index +=1
+    return (str(bomb_index))
+
 
 # Расстановка цифр
-# ...
+for i in range(Y_SIZE):
+    for j in range(X_SIZE):
+        playground[i][j] = check(i , j)
 
 
 # =========================== Отрисовка ========================
@@ -71,7 +93,66 @@ def draw_frame():
     os.system("cls")
     for y in range(Y_SIZE):
         for x in range(X_SIZE):
-            print(playground[y][x], end=" ")
+            print(player[y][x], end=" ")
         print() # Перенос на новую строку
 
 draw_frame()
+
+
+
+# =========================== Выбор клеток ========================
+
+x = 0 
+y = 0
+
+
+
+# лево
+def left():
+    global y
+    global x
+    if x > 0: x -= 1
+    draw_frame()
+
+# право 
+
+def right():
+    global y
+    global x
+    if x < X_SIZE: x += 1
+    draw_frame()
+
+# вниз
+
+def down():
+    global y    
+    global x
+    if y < Y_SIZE: y += 1
+    draw_frame()
+
+# вверх
+
+def up():
+    global y
+    global x
+    if y > 0 : y -= 1
+    draw_frame()
+
+
+keyboard.add_hotkey("w", up)
+
+keyboard.add_hotkey("a", left)
+
+keyboard.add_hotkey("s", down)
+
+keyboard.add_hotkey("d", right)
+
+def select():
+    player[y][x] = playground[y][x]
+    draw_frame()
+keyboard.add_hotkey("e", select)
+
+
+keyboard.wait("q")
+
+
