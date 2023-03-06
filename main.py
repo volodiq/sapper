@@ -62,7 +62,7 @@ match choose_dificulty:
     case "2":
         Y_SIZE = 13
         X_SIZE = 15
-        MINES_COUNT = 20
+        MINES_COUNT = 30
     # Четкие пацанчики
     case "3":
         Y_SIZE = 17
@@ -133,45 +133,49 @@ def check(y, x):
         case 8: return unselected_eig
 
 #Функция для открытия нулей
-local_x = 0
-local_y = 0
+
 def open_nulls(y, x):
-    global local_y, local_x
+
+    player[y][x] = playground[y][x]
+
+# ================================================================= Лево, право ====================================
+
     # Проверка слева
-    if x > 0 : 
-        if playground[y][x - 1] == unselected_nil : open_nulls(local_y, local_x - 1)
+    if x > 0:
+        if player[y][x - 1] != unselected_nil:
+            if playground[y][x - 1] == unselected_nil:
+                open_nulls(y , x - 1)
 
-    # Проверка слева снизу
-    if x > 0 :
-        if y < Y_SIZE - 1: 
-            if playground[y + 1][x - 1] == unselected_nil : open_nulls(local_y , local_x - 1)
+            else: player[y][x - 1] = playground[y][x - 1]
+    
+    # Проверка справа
+    if x < X_SIZE - 1 :
+        if player[y][x + 1] != unselected_nil:
+            if playground[y][x + 1] == unselected_nil:
+                open_nulls(y , x + 1)
 
-    # Проверка слева сверху
-    if x > 0 & y > 0 : 
-        if playground[y - 1][x - 1] == unselected_nil : open_nulls(local_y - 1 , local_x - 1)
+            else: player[y][x + 1] = playground[y][x + 1]
 
-        # Проверка сверху
-    if  y > 0 : 
-        if playground[y - 1][x] == unselected_nil : open_nulls(local_y - 1 , local_x)
+# ================================================================= Верх,низ ====================================
 
     # Проверка снизу
-    if y < Y_SIZE - 1 : 
-        if playground[y + 1][x] == unselected_nil : open_nulls(local_y + 1 , local_x)
+    if y < Y_SIZE - 1:
+        if player[y + 1][x] != unselected_nil:
+            if playground[y + 1][x] == unselected_nil:
+                open_nulls(y + 1, x)
 
-    # Проверка справа 
-    if x < X_SIZE - 1 : 
-        if playground[y][x + 1] == unselected_nil: open_nulls(local_y , x + local_1)
-
-    # Проверка справа снизу 
-    if x < X_SIZE - 1 & y < Y_SIZE - 1: 
-        if playground[y - 1][x + 1] == unselected_nil : open_nulls(local_y - 1 , local_x + 1)
-
-    # Проверка справа сверху
-    if x > 0 & y > 0 : 
-        if playground[y - 1][x + 1] == unselected_nil : open_nulls(local_y - 1 , local_x + 1)
+            else: player[y + 1][x] = playground[y + 1][x]
     
-    else:
-        return 0 
+    # Проверка сверху
+    if y > 0 :
+        if player[y - 1][x] != unselected_nil:
+            if playground[y - 1][x] == unselected_nil:
+                open_nulls(y  - 1, x)
+
+            else: player[y - 1][x] = playground[y - 1][x]
+    
+    
+        
 
 
 
