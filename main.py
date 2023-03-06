@@ -132,11 +132,54 @@ def check(y, x):
         case 7: return unselected_sev
         case 8: return unselected_eig
 
+#Функция для открытия нулей
+local_x = 0
+local_y = 0
+def open_nulls(y, x):
+    global local_y, local_x
+    # Проверка слева
+    if x > 0 : 
+        if playground[y][x - 1] == unselected_nil : open_nulls(local_y, local_x - 1)
+
+    # Проверка слева снизу
+    if x > 0 :
+        if y < Y_SIZE - 1: 
+            if playground[y + 1][x - 1] == unselected_nil : open_nulls(local_y , local_x - 1)
+
+    # Проверка слева сверху
+    if x > 0 & y > 0 : 
+        if playground[y - 1][x - 1] == unselected_nil : open_nulls(local_y - 1 , local_x - 1)
+
+        # Проверка сверху
+    if  y > 0 : 
+        if playground[y - 1][x] == unselected_nil : open_nulls(local_y - 1 , local_x)
+
+    # Проверка снизу
+    if y < Y_SIZE - 1 : 
+        if playground[y + 1][x] == unselected_nil : open_nulls(local_y + 1 , local_x)
+
+    # Проверка справа 
+    if x < X_SIZE - 1 : 
+        if playground[y][x + 1] == unselected_nil: open_nulls(local_y , x + local_1)
+
+    # Проверка справа снизу 
+    if x < X_SIZE - 1 & y < Y_SIZE - 1: 
+        if playground[y - 1][x + 1] == unselected_nil : open_nulls(local_y - 1 , local_x + 1)
+
+    # Проверка справа сверху
+    if x > 0 & y > 0 : 
+        if playground[y - 1][x + 1] == unselected_nil : open_nulls(local_y - 1 , local_x + 1)
+    
+    else:
+        return 0 
+
+
 
 # Расстановка цифр
 for i in range(Y_SIZE):
     for j in range(X_SIZE):
         playground[i][j] = check(i , j)
+
 
 
 # =========================== Отрисовка ========================
@@ -265,11 +308,13 @@ keyboard.add_hotkey("d", right)
 # Фунция выбора клетки
 def select():
     player[y][x] = playground[y][x]
+    if playground[y][x] == unselected_nil : open_nulls(y, x)
     draw_frame()
     
 keyboard.add_hotkey("e", select)
 
 
 keyboard.wait("q")
+
 
 
