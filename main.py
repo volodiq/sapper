@@ -38,6 +38,9 @@ selected_eig   = "\033[1m\033[35m" + "8" # Выбранная клетка с 8 
 
 mine           = "\033[1m\033[37m" + "B" # Выбранная клетка с 8 минами в округе
 
+flag           = "\033[1m\033[35m" + "F" # Флаг
+
+
 frame          = "\033[1m\033[30m" + "=" # Выбранная клетка с 8 минами в округе
 
 game_over      = "\033[1m\033[31m" + "Game Over"
@@ -315,6 +318,20 @@ def right():
     time.sleep(latency)
 
 keyboard.add_hotkey("d", right)
+
+# Установка флагов
+flag_count = MINES_COUNT
+
+def put_flag():
+    global flag_count
+
+    if flag_count > 0:
+        player[y][x] = flag
+        flag_count -= 1
+        draw_frame()
+ 
+keyboard.add_hotkey("F", put_flag)
+
 
 # Фунция выбора клетки
 def select():
