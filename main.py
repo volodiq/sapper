@@ -199,6 +199,13 @@ def draw_frame():
 draw_frame()
 
 
+# Game Over
+def game_over():
+    print("Game Over")
+    exit(0)
+    
+
+
 
 # =========================== Выбор клеток ========================
 
@@ -314,11 +321,17 @@ def select():
     player[y][x] = playground[y][x]
     if playground[y][x] == unselected_nil : open_nulls(y, x)
     draw_frame()
+    if player[y][x] == mine : game_over()
+    
     
 keyboard.add_hotkey("e", select)
 
 
+
 keyboard.wait("q")
+
+
+
 
 
 
