@@ -40,7 +40,6 @@ mine           = "\033[1m\033[37m" + "B" # Выбранная клетка с 8 
 
 flag           = "\033[1m\033[35m" + "F" # Флаг
 
-
 frame          = "\033[1m\033[30m" + "=" # Выбранная клетка с 8 минами в округе
 
 game_over      = "\033[1m\033[31m" + "Game Over"
@@ -50,12 +49,12 @@ os.system("cls")
 
 # =========================== Выбор сложности =========================
 
-
 print("1 - для лопухов, 2 - для смешариков, 3 - для четких пацанов")
 
 choose_dificulty = input("Выберите сложность: ")
 
 match choose_dificulty:
+
     # Лопухи
     case "1":
         Y_SIZE = 8
@@ -176,18 +175,11 @@ def open_nulls(y, x):
                 open_nulls(y  - 1, x)
 
             else: player[y - 1][x] = playground[y - 1][x]
-    
-    
-        
-
-
 
 # Расстановка цифр
 for i in range(Y_SIZE):
     for j in range(X_SIZE):
         playground[i][j] = check(i , j)
-
-
 
 # =========================== Отрисовка ========================
 
@@ -201,21 +193,15 @@ def draw_frame():
 
 draw_frame()
 
-
 # Game Over
 def game_over():
     print("Game Over")
     exit(0)
-    
-
-
 
 # =========================== Выбор клеток ========================
 
 x = 0 
 y = 0
-
-
 
 # управление
 latency = 0.03 # Задержка в секундах
@@ -332,7 +318,6 @@ def put_flag():
  
 keyboard.add_hotkey("F", put_flag)
 
-
 # Фунция выбора клетки
 def select():
     player[y][x] = playground[y][x]
@@ -340,15 +325,7 @@ def select():
     draw_frame()
     if player[y][x] == mine : game_over()
     
-    
 keyboard.add_hotkey("e", select)
 
-
-
+# Выход
 keyboard.wait("q")
-
-
-
-
-
-
