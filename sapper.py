@@ -1,7 +1,6 @@
 from keyboard import add_hotkey, wait
 from random import randint
 from os import system
-from sys import exit as end
 
 # =========================== Коды цветов =====================================
 
@@ -84,46 +83,53 @@ for i in range(MINES_COUNT):
     playground[randint(0, Y_SIZE - 1)][randint(0, X_SIZE - 1)] = mine
 
 # =========================== Расстановка цифр ================================
+bomb_index = 0
+
+# Функция проверки клетки
+def mine_check(y, x):
+    global bomb_index
+    if playground[y][x] == mine : bomb_index +=1
 
 # Фунция проверки смежных клеток
 def check(y, x):
 
     if playground[y][x] == mine : return mine
 
+    global bomb_index
     bomb_index = 0
 
     # Проверка слева
     if x > 0 : 
-        if playground[y][x - 1] == mine : bomb_index +=1
+        mine_check(y, x - 1)
 
     # Проверка слева снизу
-    if x > 0 :
-        if y < Y_SIZE - 1: 
-            if playground[y + 1][x - 1] == mine : bomb_index +=1
+    if x > 0:
+        if (y < Y_SIZE - 1):
+            mine_check(y + 1,x - 1)
     
     # Проверка слева сверху
     if x > 0 & y > 0 : 
-        if playground[y - 1][x - 1] == mine : bomb_index +=1
+        mine_check(y - 1,x - 1)
 
     # Проверка сверху
     if  y > 0 : 
-        if playground[y - 1][x] == mine : bomb_index +=1
+        mine_check(y - 1,x)
 
     # Проверка снизу
     if y < Y_SIZE - 1 : 
-        if playground[y + 1][x] == mine : bomb_index +=1
+        mine_check(y + 1,x)
 
     # Проверка справа 
     if x < X_SIZE - 1 : 
-        if playground[y][x + 1] == mine : bomb_index +=1
+        mine_check(y,x + 1)
 
     # Проверка справа снизу 
     if x < X_SIZE - 1 & y < Y_SIZE - 1: 
-        if playground[y + 1][x + 1] == mine : bomb_index +=1
+        mine_check(y + 1,x + 1)
 
     # Проверка справа сверху
     if x < X_SIZE - 1 & y > 0 : 
-        if playground[y - 1][x + 1] == mine : bomb_index +=1
+        mine_check(y - 1,x + 1)
 
     # Возвращение значения
     match bomb_index:
@@ -289,8 +295,7 @@ def draw_frame():
 # Game Over
 def game_over():
     print(gameover)
-    end(0)
-
+    exit()
 # Изначальная отрисовка
 draw_frame()
 
